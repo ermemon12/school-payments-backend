@@ -9,26 +9,32 @@ connectDB();
 const app = express();
 app.use(express.json());
 
-// allow frontend (localhost:3000) to talk to backend (5000)
+// Allowed origins
 const allowedOrigins = [
   "http://localhost:3000",                   // local frontend
-  "https://your-frontend-url.netlify.app",  // deployed frontend
-  "https://school-payments-backend-42rn.onrender.com" // deployed backend for API calls
+  "https://soft-treacle-6918fe.netlify.app", // deployed frontend
+  "https://school-payments-backend-42rn.onrender.com" // deployed backend
 ];
 
+// CORS middleware
 app.use(cors({
   origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
+    if (!origin) return callback(null, true); // allow Postman or server-to-server requests
     if (!allowedOrigins.includes(origin)) {
       const msg = `CORS policy does not allow access from origin: ${origin}`;
       return callback(new Error(msg), false);
     }
     return callback(null, true);
   },
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
   credentials: true
 }));
 
+// Handle preflight OPTIONS requests
+app.options("*", cors());
 
+// Test route
 app.get("/", (req, res) => {
   res.send("School Payments API is running...");
 });
