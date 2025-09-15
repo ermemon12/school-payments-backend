@@ -10,7 +10,23 @@ const app = express();
 app.use(express.json());
 
 // allow frontend (localhost:3000) to talk to backend (5000)
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+const allowedOrigins = [
+  "http://localhost:3000",                   // local frontend
+  "https://your-frontend-domain.onrender.com" // deployed frontend
+];
+
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); // allow requests like Postman
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
+}));
+
 
 app.get("/", (req, res) => {
   res.send("School Payments API is running...");
