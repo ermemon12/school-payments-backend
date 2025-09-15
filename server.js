@@ -12,14 +12,15 @@ app.use(express.json());
 // allow frontend (localhost:3000) to talk to backend (5000)
 const allowedOrigins = [
   "http://localhost:3000",                   // local frontend
-  "https://your-frontend-domain.onrender.com" // deployed frontend
+  "https://your-frontend-url.netlify.app",  // deployed frontend
+  "https://school-payments-backend-42rn.onrender.com" // deployed backend for API calls
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
-    if (!origin) return callback(null, true); // allow requests like Postman
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+    if (!origin) return callback(null, true);
+    if (!allowedOrigins.includes(origin)) {
+      const msg = `CORS policy does not allow access from origin: ${origin}`;
       return callback(new Error(msg), false);
     }
     return callback(null, true);
