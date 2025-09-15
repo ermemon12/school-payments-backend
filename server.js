@@ -7,33 +7,32 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
+// Parse JSON requests
 app.use(express.json());
 
 // Allowed origins
 const allowedOrigins = [
-  "http://localhost:3000",                    
-  "https://stellular-pavlova-772835.netlify.app", // current deployed frontend
+  "http://localhost:3000",
+  "https://stellular-pavlova-772835.netlify.app",
   "https://school-payments-backend-42rn.onrender.com"
 ];
 
-// CORS middleware
+// CORS middleware applied globally
 app.use(
   cors({
     origin: function(origin, callback) {
-      if (!origin) return callback(null, true); // allow Postman or curl
+      if (!origin) return callback(null, true);
       if (!allowedOrigins.includes(origin)) {
         return callback(new Error(`CORS policy does not allow access from origin: ${origin}`), false);
       }
       return callback(null, true);
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], // ✅ allow preflight methods
-    allowedHeaders: ["Content-Type", "Authorization"]              // ✅ allow headers used by frontend
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
-
-// Handle preflight requests for all routes
-app.options("*", cors());
 
 // Test route
 app.get("/", (req, res) => {
