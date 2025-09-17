@@ -1,4 +1,4 @@
-## School Payments Backend
+# School Payments Backend
 
 A secure, scalable backend API for managing school transactions, including user authentication, payments, and transaction tracking. Built with Node.js, Express, and MongoDB.
 
@@ -153,8 +153,8 @@ JWT token must be sent in headers for protected routes:
 
 Authorization: Bearer <token>
 
-
 Make sure frontend matches backend API URLs.
 
 Test webhooks using payment gateway sandbox environment.
 
+## Deployed Link: https://school-payments-backend-42rn.onrender.com
